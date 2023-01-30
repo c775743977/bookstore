@@ -60,5 +60,7 @@ func CleanCart(userid int) {
 	cart := GetCart(userid)
 	sqlstr := "delete from bookstore.cart_items where cart_id = ?"
 	utils.DB.Exec(sqlstr, cart.ID)
+	sqlstr = "delete from bookstore.carts where cart_id = ?"
+	utils.DB.Exec(sqlstr, cart.ID)
 	UpdateCart(userid)
 }

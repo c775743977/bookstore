@@ -28,6 +28,12 @@ func main() {
 	http.HandleFunc("/AddBookToCart", controller.AddBookToCart) //添加图书到购物车
 	http.HandleFunc("/delete_item", controller.DelItemHandler) //在购物车中删除购物项
 	http.HandleFunc("/CleanUp", controller.CleanCartHandler) //清空购物车
+	http.HandleFunc("/checkout", controller.SubmitOrder) //提交订单
+	http.HandleFunc("/MyOrders", controller.ShowOrders)  //我的订单页面
+	http.HandleFunc("/showOrderItems", controller.ShowOrderItems) //订单详情页面
+	http.HandleFunc("/cancelOrder", controller.DelOrderHandler)  //删除订单
+	http.HandleFunc("/pay", controller.PayHandler) //付款
+	http.HandleFunc("/signed", controller.SignHandler) //付款
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("http.ListenAndServe error:", err)

@@ -116,7 +116,7 @@ func GetPage(bpageno string) (page *model.Page) {  //获取一页的图书数据
 	return page
 }
 
-func GetPageByPrice(bpageno string, bmax string, bmin string) (page *model.Page) {
+func GetPageByPrice(bpageno string, bmax string, bmin string) (page *model.Page) { //按照价格搜索结果的一页数据
 	max, _ := strconv.ParseFloat(bmax, 64)
 	min, _ := strconv.ParseFloat(bmin, 64)
 	pageno, _ := strconv.ParseInt(bpageno, 10, 0)

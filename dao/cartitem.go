@@ -56,7 +56,7 @@ func CheckItem(bookid int, cartid int) bool {
 	var res int
 	err := row.Scan(&res)
 	if err != nil {
-		fmt.Println("CheckItem row.Scan error:", err)
+		// fmt.Println("CheckItem row.Scan error:", err)
 		return false
 	}
 	return true

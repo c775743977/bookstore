@@ -10,9 +10,10 @@
 			<img class="logo_img" alt="" src="/static/img/logo.gif" >
 			<span class="wel_word">订单详情</span>
 			<div>
-				<a href="/getPageBooks">图书管理</a>
-				<a href="/getOrders">订单管理</a>
-				<a href="/main">返回商城</a>
+				<a href="/cart">购物车</a>
+				<!-- <a href="/getOrders">订单管理</a> -->
+				<a href="/MyOrders">我的订单</a>
+				<a href="/home">返回商城</a>
 			</div>
 	</div>
 	
@@ -29,12 +30,12 @@
 		{{range .}}
 			<tr>
 				<td>
-					<img class="book_img" src="{{.ImgPath}}" />
+					<img class="book_img" src="/static/img/default.jpg" />
 				</td>
 				<td>{{.Title}}</td>
 				<td>{{.Author}}</td>
 				<td>{{.Price}}</td>
-				<td>{{.Count}}</td>
+				<td>{{.Num}}</td>
 				<td>{{.Amount}}</td>
 			</tr>
 		{{end}}		

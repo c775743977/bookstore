@@ -76,9 +76,10 @@ func GetBooksHandler(w http.ResponseWriter, r *http.Request) { //获取所有图
 func DelBookHandler(w http.ResponseWriter, r *http.Request) { //删除图书
 	id, _ := strconv.ParseInt(r.FormValue("bookID"), 10, 0) //从URL中获取请求数据
 	dao.DelBook(id)
-	t := template.Must(template.ParseFiles("views/pages/manager/book_manager.html"))
-	books := dao.GetBooks()
-	t.Execute(w, books)
+	// t := template.Must(template.ParseFiles("views/pages/manager/book_manager.html"))
+	// books := dao.GetBooks()
+	// t.Execute(w, books)
+	GetPageHandler(w, r)
 }
 
 func GetBookHandler(w http.ResponseWriter, r *http.Request) {
@@ -146,7 +147,12 @@ func AddOrAlterBook(w http.ResponseWriter, r *http.Request) { //执行添加或�
 	}
 }
 
-func GetPageHandler(w http.ResponseWriter, r *http.Request) { //对某一页初始化
+func GetPageHandler(w http.ResponseWriter, r *http.Request) { //对某一页初始化,不带封面
+	cookie := r.Cookies()
+	username, _ := dao.GetSession(cookie[0].Value)
+	if username != "root" {
+		return
+	}
 	pageno := r.FormValue("PageNo")
 	if pageno == "" {
 		pageno = "1"

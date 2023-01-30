@@ -42,3 +42,11 @@ func (page *Page) Test() bool {
 		return true
 	}
 }
+
+func (page *Page) IsRoot() bool {
+	if page.Username == "root" {
+		return true
+	} else {
+		return false
+	}
+}

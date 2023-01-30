@@ -7,5 +7,5 @@ type OrderItems struct {
 	Title string
 	Author string
 	Price float64
-	ImgPath string
+	// ImgPath string
 }

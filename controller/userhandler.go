@@ -8,7 +8,7 @@ import (
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {  //处理登录界面
-	if r.Header.Get("Cookie") != "" {
+	if r.Header.Get("Cookie") != "" { //如果已有cookie说明已经登录，直接转主页
 		Handler(w, r)
 		return
 	}
