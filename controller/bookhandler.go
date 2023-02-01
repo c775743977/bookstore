@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"Hello_golang/bookstore/dao"
-	"Hello_golang/bookstore/model"
+	"bookstore1.1/dao"
+	"bookstore1.1/model"
 	"fmt"
 	"net/http"
 	"html/template"
