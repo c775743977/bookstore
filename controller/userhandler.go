@@ -96,3 +96,9 @@ func LogOut(w http.ResponseWriter, r *http.Request) {  //注销
 	}
 	Handler(w, r)
 }
+
+func ShowAllUsers(w http.ResponseWriter, r *http.Request) {
+	us := dao.GetAllUsers()
+	t := template.Must(template.ParseFiles("views/pages/manager/user_manager.html"))
+	t.Execute(w, us)
+}

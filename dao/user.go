@@ -49,3 +49,27 @@ func UserRegister(name string, passwd string, email string) {  //注册新用户
 		fmt.Println("utils.DB.Exec error:", err)
 	}
 }
+
+func GetAllUsers() []*model.User {
+	var us []*model.User
+	sqlstr := "select * from bookstore.users"
+	rows, err := utils.DB.Query(sqlstr)
+	if err != nil {
+		fmt.Println("GetAllUsers utils.DB.Query error:", err)
+		return nil
+	}
+	for rows.Next() {
+		user := &model.User{}
+		rows.Scan(&user.ID, &user.Name, &user.Password, &user.Email, &user.Privilege)
+		us = append(us, user)
+	}
+	return us
+}
+
+func GetUserByID(userid int) string {
+	sqlstr := "select name from bookstore.users where id=?"
+	row := utils.DB.QueryRow(sqlstr, userid)
+	var username string
+	row.Scan(&username)
+	return username
+}

@@ -122,3 +122,38 @@ func Sign(orderid string) {
 		return
 	}
 }
+
+func Deliver(orderid string) {
+	sqlstr := "update bookstore.orders set status=3 where id=?"
+	_, err := utils.DB.Exec(sqlstr, orderid)
+	if err != nil {
+		fmt.Println("Sign utils.DB.Exec error:", err)
+		return
+	}
+}
+
+func TakeOrder(orderid string) {
+	sqlstr := "update bookstore.orders set status=2 where id=?"
+	_, err := utils.DB.Exec(sqlstr, orderid)
+	if err != nil {
+		fmt.Println("Sign utils.DB.Exec error:", err)
+		return
+	}
+}
+
+func GetAllOrders() []*model.Order {
+	var orders []*model.Order
+	sqlstr := "select * from bookstore.orders"
+	rows, err := utils.DB.Query(sqlstr)
+	if err != nil {
+		fmt.Println("GetOrder utils.DB.Query error:", err)
+		return nil
+	}
+	for rows.Next() {
+		order := &model.Order{}
+		rows.Scan(&order.OrderID, &order.CreateTime, &order.Num, &order.Amount, &order.Status, &order.UserID)
+		order.UserName = GetUserByID(int(order.UserID))
+		orders = append(orders, order)
+	}
+	return orders
+}

@@ -69,3 +69,27 @@ func SignHandler(w http.ResponseWriter, r *http.Request) {
 	dao.Sign(orderid)
 	ShowOrders(w, r)
 }
+
+func DeliverHandler(w http.ResponseWriter, r *http.Request) {
+	orderid := r.FormValue("orderID")
+	dao.Deliver(orderid)
+	GetAllOrdersHandler(w, r)
+}
+
+func TakeOrderHandler(w http.ResponseWriter, r *http.Request) {
+	orderid := r.FormValue("orderID")
+	dao.TakeOrder(orderid)
+	GetAllOrdersHandler(w, r)
+}
+
+func GetAllOrdersHandler(w http.ResponseWriter, r *http.Request) {
+	orders := dao.GetAllOrders()
+	t := template.Must(template.ParseFiles("views/pages/manager/order_manager.html"))
+	t.Execute(w, orders)
+}
+
+func MDelOrderHandler(w http.ResponseWriter, r *http.Request) {
+	orderid := r.FormValue("orderID")
+	dao.DelOrder(orderid)
+	GetAllOrdersHandler(w, r)
+}

@@ -33,7 +33,12 @@ func main() {
 	http.HandleFunc("/showOrderItems", controller.ShowOrderItems) //订单详情页面
 	http.HandleFunc("/cancelOrder", controller.DelOrderHandler)  //删除订单
 	http.HandleFunc("/pay", controller.PayHandler) //付款
-	http.HandleFunc("/signed", controller.SignHandler) //付款
+	http.HandleFunc("/signed", controller.SignHandler) //签收
+	http.HandleFunc("/user_manager", controller.ShowAllUsers) //用户管理界面
+	http.HandleFunc("/order_manager", controller.GetAllOrdersHandler) //订单管理界面
+	http.HandleFunc("/deliver", controller.DeliverHandler) //发货
+	http.HandleFunc("/McancelOrder", controller.MDelOrderHandler) //管理员删除订单
+	http.HandleFunc("/takeOrder", controller.TakeOrderHandler) //接收订单
 	err := http.ListenAndServe(":80", nil)
 	if err != nil {
 		fmt.Println("http.ListenAndServe error:", err)

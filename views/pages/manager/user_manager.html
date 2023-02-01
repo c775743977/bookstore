@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>图书管理</title>
+<title>用户管理</title>
 <link type="text/css" rel="stylesheet" href="/static/css/style.css" >
 <script src="/static/script/jquery-1.7.2.js"></script>
 <script>
@@ -41,15 +41,19 @@
 				<td>管理员</td>
 				<td colspan="2">操作</td>
 			</tr>	
-			{{range .Books}}	
+			{{range .}}	
 			<tr>
-				<td>{{.Title}}</td>
-				<td>{{.Price}}</td>
-				<td>{{.Author}}</td>
-				<td>{{.Sales}}</td>
-				<td>{{.Stock}}</td>
+				<td>{{.ID}}</td>
+				<td>{{.Name}}</td>
+				<td>{{.Password}}</td>
+				<td>{{.Email}}</td>
+				{{if .IsRoot}}
+				<td>是</td>
+				{{else}}
+				<td>否</td>
+				{{end}}
 				<td><a href="#">修改</a></td>
-				<td><a id="{{.Title}}" class="deleteBook" href="#">删除</a></td>
+				<td><a id="" class="" href="#">删除</a></td>
 			</tr>	
 			{{end}}
 			<tr>

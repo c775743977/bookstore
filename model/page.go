@@ -2,7 +2,7 @@ package model
 
 import (
 	"bookstore1.1/utils"
-	"fmt"
+	// "fmt"
 )
 
 type Page struct {
@@ -54,7 +54,7 @@ func (page *Page) IsRoot() bool {
 	var res string
 	err := row.Scan(&res)
 	if err != nil {
-		fmt.Println("page(IsRoot) row.Scan error:", err)
+		// fmt.Println("page(IsRoot) row.Scan error:", err)
 		return false
 	}
 	if res == "Y" {
