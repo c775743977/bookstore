@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"Hello_golang/bookstore/model"
-	"Hello_golang/bookstore/utils"
+	"bookstore1.1/model"
+	"bookstore1.1/utils"
 	"fmt"
 	_"strconv"
 )
