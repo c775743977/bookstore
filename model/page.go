@@ -1,7 +1,7 @@
 package model
 
 import (
-	"Hello_golang/bookstore/utils"
+	"bookstore1.1/utils"
 	"fmt"
 )
 
