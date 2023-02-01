@@ -25,9 +25,8 @@
 	
 	<div id="header">
 			<img class="logo_img" alt="" src="/static/img/logo.gif" >
-			<span class="wel_word">图书管理系统</span>
+			<span class="wel_word">后台管理系统</span>
 			<div>
-				<a href="book_manager">图书管理</a>
 				<a href="/">返回商城</a>
 			</div>
 	</div>
@@ -35,11 +34,11 @@
 	<div id="main">
 		<table>
 			<tr>
-				<td>名称</td>
-				<td>价格</td>
-				<td>作者</td>
-				<td>销量</td>
-				<td>库存</td>
+				<td>ID</td>
+				<td>用户名</td>
+				<td>密码</td>
+				<td>邮箱</td>
+				<td>管理员</td>
 				<td colspan="2">操作</td>
 			</tr>	
 			{{range .Books}}	
@@ -49,8 +48,8 @@
 				<td>{{.Author}}</td>
 				<td>{{.Sales}}</td>
 				<td>{{.Stock}}</td>
-				<td><a href="/tobook_alter_add?bookID={{.ID}}">修改</a></td>
-				<td><a id="{{.Title}}" class="deleteBook" href="/deletebook?bookID={{.ID}}">删除</a></td>
+				<td><a href="#">修改</a></td>
+				<td><a id="{{.Title}}" class="deleteBook" href="#">删除</a></td>
 			</tr>	
 			{{end}}
 			<tr>
@@ -60,11 +59,11 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><a href="/tobook_alter_add">添加图书</a></td>
+				<td><a href="#">添加用户</a></td>
 			</tr>	
 		</table>
 	</div>
-	<div id="page_nav">
+	<!-- <div id="page_nav">
 		{{if .IsFirstPage}}
 		<a href="book_manager?PageNo=1">首页</a>
 		<a href="book_manager?PageNo={{.PrePage}}">上一页</a>
@@ -84,7 +83,7 @@
 				location = "/book_manager?PageNo="+PageNo
 			});
 		</script>
-		</div>
+		</div> -->
 	<div id="bottom">
 		<span>
 			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易，前端设计参考尚硅谷项目)

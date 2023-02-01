@@ -9,7 +9,7 @@ import (
 
 
 func main() {
-	http.HandleFunc("/home", controller.Handler) //主页
+	http.HandleFunc("/", controller.Handler) //主页
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("views/static")))) //设置静态资源
 	http.Handle("/pages/", http.StripPrefix("/pages/", http.FileServer(http.Dir("views/pages")))) //设置静态资源
 	http.HandleFunc("/login", controller.LoginHandler) //登录页面
@@ -34,7 +34,7 @@ func main() {
 	http.HandleFunc("/cancelOrder", controller.DelOrderHandler)  //删除订单
 	http.HandleFunc("/pay", controller.PayHandler) //付款
 	http.HandleFunc("/signed", controller.SignHandler) //付款
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":80", nil)
 	if err != nil {
 		fmt.Println("http.ListenAndServe error:", err)
 	}

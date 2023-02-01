@@ -1,5 +1,10 @@
 package model
 
+import (
+	"Hello_golang/bookstore/utils"
+	"fmt"
+)
+
 type Page struct {
 	Books []*Book
 	PageNo int64
@@ -44,9 +49,16 @@ func (page *Page) Test() bool {
 }
 
 func (page *Page) IsRoot() bool {
-	if page.Username == "root" {
-		return true
-	} else {
+	sqlstr := "select privilege from bookstore.users where name=?"
+	row:= utils.DB.QueryRow(sqlstr, page.Username)
+	var res string
+	err := row.Scan(&res)
+	if err != nil {
+		fmt.Println("page(IsRoot) row.Scan error:", err)
 		return false
 	}
+	if res == "Y" {
+		return true
+	}
+	return false
 }

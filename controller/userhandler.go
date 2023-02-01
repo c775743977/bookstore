@@ -24,8 +24,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {  //处理登录界�
 		}
 	password := r.PostFormValue("password")
 	// fmt.Println("POST数据：", username, password)
-	uuid := dao.CheckUserNameAndPassword(username, password) //创造sessionID
-	if uuid != "" { //判断账号密码
+	uuid := dao.CheckUserNameAndPassword(username, password) //创造sessionID//判断账号密码
+	if uuid != "" { 
 		cookie := http.Cookie{
 			Name : "user",
 			Value : uuid,
