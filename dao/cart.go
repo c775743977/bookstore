@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"bookstore1.1/model"
-	"bookstore1.1/utils"
+	"bookstore1.2/model"
+	"bookstore1.2/utils"
 	"fmt"
 	"strconv"
 )

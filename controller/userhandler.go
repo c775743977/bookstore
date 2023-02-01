@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bookstore1.1/dao"
+	"bookstore1.2/dao"
 	"fmt"
 	"net/http"
 	"html/template"

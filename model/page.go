@@ -1,7 +1,7 @@
 package model
 
 import (
-	"bookstore1.1/utils"
+	"bookstore1.2/utils"
 	// "fmt"
 )
 
