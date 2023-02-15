@@ -1,0 +1,100 @@
+{{ define "manager/order_manager.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单管理</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<script src="/static/script/jquery-1.7.2.js"></script>
+<script>
+	$(function(){
+		//给删除订单的超链接绑定单击事件
+		$(".deleteOrder").click(function(){
+			var OrderID = $(this).attr("id");
+			return confirm("确定要删除订单"+OrderID+"吗？");
+		});
+	});
+    $(function(){
+		//给确认发货的超链接绑定单击事件
+		$(".deliverOrder").click(function(){
+			var OrderID = $(this).attr("id");
+			return confirm("确定要发出订单"+OrderID+"吗？");
+		});
+	});
+    $(function(){
+		//给确认订单的超链接绑定单击事件
+		$(".takeOrder").click(function(){
+			var OrderID = $(this).attr("id");
+			return confirm("接收订单"+OrderID+"吗？");
+		});
+	});
+</script>
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+</style>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">订单管理</span>
+			<div>
+				<!-- <a href="/getMyOrder">我的订单</a> -->
+				<a href="/logout">注销</a>&nbsp;&nbsp;
+				<a href="/home">返回</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+                <th>用户</th>
+				<th>单号</th>
+				<th>日期</th>
+				<th>数量</th>
+				<th>金额</th>
+				<th>详情</th>
+				<th>当前状态</th>
+			</tr>		
+		{{range .}}
+			<tr>
+                <td>{{.UserName}}</td>
+				<td>{{.ID}}</td>
+				<td>{{.CreateTime}}</td>
+				<td>{{.TotalCount}}</td>
+				<td>{{.TotalAmount}}</td>
+				<td><a href="/showOrderItems?orderID={{.ID}}">查看详情</a></td>
+				<td class="state">
+					{{if .Delivering}}
+						商家已发货
+					{{end}}
+					{{if .WaitingDelivery}}
+						等待商家发货 （<a id="{{.ID}}" class="deliverOrder" href="/deliver?orderID={{.ID}}">立即发货</a>）
+					{{end}}	
+					{{if .Signed}}
+                        买家已签收
+					{{end}}
+					{{if .Unpaid}}	
+						买家未付款
+					{{end}}		
+					{{if .Paid}}	
+                        买家已付款（<a id="{{.ID}}" class="takeOrder" href="/takeOrder?orderID={{.ID}}">确认订单</a>）
+					{{end}}
+				</td>
+				<td><a id="{{.ID}}" class="deleteOrder" href="/McancelOrder?orderID={{.ID}}">取消订单</a></td>
+			</tr>
+		{{end}}		
+		</table>
+	</div>
+	
+	<div id="bottom">
+		<span>
+			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易)
+		</span>
+	</div>
+</body>
+</html>
+{{end}}

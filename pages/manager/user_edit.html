@@ -1,0 +1,83 @@
+{{ define "manager/user_edit.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>编辑用户</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+	
+	input {
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+		<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">编辑用户</span>
+			<div>
+				<a href="/user_manager">用户管理</a>
+				<a href="/home">返回商城</a>
+			</div>
+		</div>
+		<div id="main">
+			<form action="/user_alter?userID={{.ID}}" method="POST">
+				<table>
+                    {{if .}}
+					<tr>
+						<td>ID</td>
+						<td>用户名</td>
+						<td>密码</td>
+						<td>邮箱</td>
+						<td>管理员</td>
+						<td colspan="2">操作</td>
+					</tr>	
+					<tr>
+                        <input name="userID" type="hidden" value="{{.ID}}">	
+                        <td>{{.ID}}</td>
+						<td><input name="username" type="text" value="{{.Name}}"/></td>
+						<td><input name="password" type="text" value="{{.Password}}"/></td>
+						<td><input name="email" type="text" value="{{.Email}}"/></td>
+						<td><input name="privilege" type="text" value="{{.Privilege}}"/></td>
+                        {{else}}
+                        <tr>
+                            <td>用户名</td>
+                            <td>密码</td>
+                            <td>邮箱</td>
+                            <td>管理员</td>
+                            <td colspan="2">操作</td>
+                        </tr>	
+                        <tr>
+						<td><input name="username" type="text"/></td>
+						<td><input name="password" type="text"/></td>
+						<td><input name="email" type="text"/></td>
+						<td><input name="privilege" type="text"/></td>
+                        {{end}}
+						<td><input type="submit" value="提交"/></td>
+                        <div class="msg_cont">
+							<b></b>
+							<span class="errorMsg">{{.Err}}</span>
+						</div>
+					</tr>		
+				</table>
+			</form>
+			
+	
+		</div>
+		<div id="bottom">
+			<span>
+				小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易)
+			</span>
+		</div>
+</body>
+</html>
+{{end}}

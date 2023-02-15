@@ -1,0 +1,96 @@
+{{ define "manager/book_manager.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>图书管理</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<script src="/static/script/jquery-1.7.2.js"></script>
+<script>
+	$(function(){
+		//给删除图书的超链接绑定单击事件
+		$(".deleteBook").click(function(){
+			//获取书名
+			var title = $(this).attr("id");
+			// var flag = confirm("确定要删除【"+title+"】这本图书吗？");
+			// if(!flag){
+			// 	//取消默认行为
+			// 	return false;
+			// }
+			return confirm("确定要删除【"+title+"】这本图书吗？");
+		});
+	});
+</script>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">图书管理系统</span>
+			<div>
+				<a href="book_manager">图书管理</a>
+				<a href="/home">返回商城</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<td>名称</td>
+				<td>价格</td>
+				<td>作者</td>
+				<td>销量</td>
+				<td>库存</td>
+				<td colspan="2">操作</td>
+			</tr>	
+			{{range .Books}}	
+			<tr>
+				<td>{{.Title}}</td>
+				<td>{{.Price}}</td>
+				<td>{{.Author}}</td>
+				<td>{{.Sales}}</td>
+				<td>{{.Stock}}</td>
+				<td><a href="/book_alter_add?bookID={{.ID}}">修改</a></td>
+				<td><a id="{{.Title}}" class="deleteBook" href="/deletebook?bookID={{.ID}}">删除</a></td>
+			</tr>	
+			{{end}}
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><a href="/book_alter_add">添加图书</a></td>
+			</tr>	
+		</table>
+	</div>
+	<div id="page_nav">
+		{{if .IsFirstPage}}
+		<a href="book_manager?PageNo=1">首页</a>
+		<a href="book_manager?PageNo={{.PrePage}}">上一页</a>
+		{{end}}
+		当前为第{{.PageNo}}页，共{{.TotalPages}}页，{{.TotalBooks}}条记录
+		{{if .IsLastPage}}
+		<a href="book_manager?PageNo={{.SubPage}}">下一页</a>
+		<a href="book_manager?PageNo={{.TotalPages}}">末页</a>
+		{{end}}
+		到第<input value="4" name="pn" id="pn_input"/>页
+		<input type="button" value="确定" id="submit">
+		<script>
+			//给确定按钮绑定单击事件
+			$("#submit").click(function(){
+				//获取输入的页码
+				var PageNo = $("#pn_input").val();
+				location = "/book_manager?PageNo="+PageNo
+			});
+		</script>
+		</div>
+	<div id="bottom">
+		<span>
+			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易)
+		</span>
+	</div>
+</body>
+</html>
+{{end}}

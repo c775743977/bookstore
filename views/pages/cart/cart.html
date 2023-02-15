@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>购物车</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">购物车</span>
+			<div>
+				<span>用户: {{.UserName}}</span>
+				<a href="/logout">注销</a>&nbsp;&nbsp;
+				<a href="/home">返回</a>
+			</div>
+	</div>
+	
+	<div id="main">
+	
+		<table>
+			<tr>
+				<td>商品名称</td>
+				<td>数量</td>
+				<td>单价</td>
+				<td>金额</td>
+				<td>操作</td>
+			</tr>	
+			{{range .Items}}	
+			<tr>
+				<td>{{.Book.Title}}</td>
+				<td>{{.Num}}</td>
+				<td>{{.Book.Price}}</td>
+				<td>{{.Amount}}</td>
+				<td><a href="/delete_item?bookID={{.Book.ID}}">删除</a></td>
+				<td><a href="/cart2?item={{.Book.ID}}">修改数量</a></td>
+			</tr>
+			{{else}}
+			<tr>
+				<td>当前购物车为空</td>	
+			</tr>
+			{{end}}
+		</table>
+		
+		<div class="cart_info">
+			<span class="cart_span">购物车中共有<span class="b_count">{{.Num}}</span>件商品</span>
+			<span class="cart_span">总金额<span class="b_price">{{.Amount}}</span>元</span>
+			<span class="cart_span"><a href="/CleanUp">清空购物车</a></span>
+			<span class="cart_span"><a href="/pages/cart/checkout.html">去结账</a></span>
+		</div>
+	
+	</div>
+	
+	<div id="bottom">
+		<span>
+			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易，前端设计参考尚硅谷项目)
+		</span>
+	</div>
+</body>
+</html>

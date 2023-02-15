@@ -1,0 +1,53 @@
+{{ define "order/order_info.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单详情</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+</head>
+<body>
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">订单详情</span>
+			<div>
+				<a href="/cart">购物车</a>
+				<!-- <a href="/getOrders">订单管理</a> -->
+				<a href="/MyOrders">我的订单</a>
+				<a href="/home">返回商城</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<th>封面</th>
+				<th>书名</th>
+				<th>作者</th>
+				<th>价格</th>
+				<th>数量</th>
+				<th>金额</th>
+			</tr>		
+		{{range .}}
+			<tr>
+				<td>
+					<img class="book_img" src="/static/img/default.jpg" />
+				</td>
+				<td>{{.Title}}</td>
+				<td>{{.Author}}</td>
+				<td>{{.Price}}</td>
+				<td>{{.Num}}</td>
+				<td>{{.Amount}}</td>
+			</tr>
+		{{end}}		
+		</table>
+	</div>
+	
+	<div id="bottom">
+		<span>
+			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易)
+		</span>
+	</div>
+</body>
+</html>
+{{end}}

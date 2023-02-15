@@ -1,0 +1,72 @@
+{{ define "manager/user_manager.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<script src="/static/script/jquery-1.7.2.js"></script>
+<script>
+	$(function(){
+		//给删除用户的超链接绑定单击事件
+		$(".deleteUser").click(function(){
+			var username = $(this).attr("id");
+			return confirm("确定要删除用户“"+username+"”吗？");
+		});
+	});
+</script>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">后台管理系统</span>
+			<div>
+				<a href="/home">返回商城</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<td>ID</td>
+				<td>用户名</td>
+				<td>密码</td>
+				<td>邮箱</td>
+				<td>管理员</td>
+				<td colspan="2">操作</td>
+			</tr>	
+			{{range .}}	
+			<tr>
+				<td>{{.ID}}</td>
+				<td>{{.Name}}</td>
+				<td>{{.Password}}</td>
+				<td>{{.Email}}</td>
+				{{if .IsRoot}}
+				<td>是</td>
+				{{else}}
+				<td>否</td>
+				{{end}}
+				<td><a href="/user_alter?userID={{.ID}}">修改</a></td>
+				<td><a id="{{.Name}}" class="deleteUser" href="/user_delete?userID={{.ID}}">删除</a></td>
+			</tr>	
+			{{end}}
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><a href="/user_alter">添加用户</a></td>
+			</tr>	
+		</table>
+	</div>
+	<div id="bottom">
+		<span>
+			小陈书城.Copyright &copy;2023(该网站仅供个人测试使用，不涉及任何金钱交易)
+		</span>
+	</div>
+</body>
+</html>
+{{end}}
