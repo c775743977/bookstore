@@ -42,7 +42,9 @@ func Handler(c *gin.Context) {  //首页
 		}
 		page = dao.GetPageByPrice(pageno, max, min)
 	}
-	page.Username = sess.Username
+	if sess != nil {
+		page.Username = sess.Username
+	}
 	c.HTML(http.StatusOK, "index/index.html", page)
 }
 
