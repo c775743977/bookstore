@@ -28,7 +28,7 @@ func CreateOrder(cart *model.Cart) *model.Order {
 	order.Status = 0
 	order.UserID = int64(cart.UserID)
 	order.CreateTime = GetTime()
-	utils.DB.Create(&order)
+	utils.WDB.Create(&order)
 	return &order
 }
 
@@ -43,46 +43,50 @@ func AddOrderItems(cart *model.Cart, orderid string) []*model.OrderItem {
 		item.Author = k.Book.Author
 		item.Price = k.Book.Price
 		items = append(items, &item)
-		utils.DB.Create(&item)
+		utils.WDB.Create(&item)
 	}
 	return items
 }
 
 func GetOrders(userid int) []*model.Order {
 	var orders []*model.Order
-	utils.DB.Where("user_id = ?", userid).Find(&orders)
+	utils.DBrr.RoundRobin().Where("user_id = ?", userid).Find(&orders)
 	return orders
 }
 
 func GetOrderItems(orderid string) []*model.OrderItem {
 	var items []*model.OrderItem
-	utils.DB.Where("order_id = ?", orderid).Find(&items)
+	utils.DBrr.RoundRobin().Where("order_id = ?", orderid).Find(&items)
 	return items
 }
 
 func DelOrder(orderid string) {
-	utils.DB.Where("order_id = ?", orderid).Delete(&model.OrderItem{})
-	utils.DB.Where("id = ?", orderid).Delete(&model.Order{})
+	utils.WDB.Where("order_id = ?", orderid).Delete(&model.OrderItem{})
+	utils.WDB.Where("id = ?", orderid).Delete(&model.Order{})
 }
 
 func Pay(orderid string) {
-	utils.DB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 1})
+	utils.WDB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 1})
 }
 
 func Sign(orderid string) {
-	utils.DB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 4})
+	utils.WDB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 4})
 }
 
 func Deliver(orderid string) {
-	utils.DB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 3})
+	utils.WDB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 3})
 }
 
 func TakeOrder(orderid string) {
-	utils.DB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 2})
+	utils.WDB.Where("id = ?", orderid).Select("status").Updates(model.Order{Status : 2})
 }
 
 func GetAllOrders() []*model.Order {
 	var orders []*model.Order
-	utils.DB.Find(&orders)
+	utils.DBrr.RoundRobin().Find(&orders)
+	for _, k := range orders {
+		user := GetUserByID(int(k.UserID))
+		k.UserName = user.Name
+	}
 	return orders
 }

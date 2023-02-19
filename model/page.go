@@ -50,7 +50,7 @@ func (page *Page) Test() bool {
 
 func (page *Page) IsRoot() bool {
 	var res string
-	utils.DB.Model(&User{}).Where("name = ?", page.Username).Select("privilege").Find(&res)
+	utils.DBrr.RoundRobin().Model(&User{}).Where("name = ?", page.Username).Select("privilege").Find(&res)
 	if res == "Y" {
 		return true
 	}

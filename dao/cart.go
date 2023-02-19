@@ -9,18 +9,18 @@ import (
 
 func CreateCart(name string) { //每个用户都应该有自己的购物车，所以每当有新用户创建时就应该给他开启一个购物车数据
 	var id int
-	utils.DB.Model(&model.User{}).Select("id").Where("name = ?", name).Find(&id)
+	utils.DBrr.RoundRobin().Model(&model.User{}).Select("id").Where("name = ?", name).Find(&id)
 	var cart = model.Cart{
 		Num : 0,
 		Amount : 0,
 		UserID : id,
 	}
-	utils.DB.Create(&cart)
+	utils.WDB.Create(&cart)
 }
 
 func GetCart(userid int) *model.Cart {
 	var cart model.Cart
-	utils.DB.Where("user_id = ?", userid).Find(&cart)
+	utils.DBrr.RoundRobin().Where("user_id = ?", userid).Find(&cart)
 	cart.Items = GetItems(cart.ID)
 	return &cart
 }
@@ -35,12 +35,12 @@ func UpdateCart(userid int) {
 	}
 	cart.Num = total_num
 	cart.Amount = total_amount
-	utils.DB.Model(&cart).Select("num", "amount").Where("user_id = ?", userid).Updates(cart)
+	utils.WDB.Model(&cart).Select("num", "amount").Where("user_id = ?", userid).Updates(cart)
 }
 
 func CleanCart(userid int) {
 	cart := GetCart(userid)
-	utils.DB.Where("cart_id = ?", cart.ID).Delete(&model.CartItem{})
-	utils.DB.Where("id = ?", cart.ID).Updates(model.Cart{Amount : 0, Num : 0,})
+	utils.WDB.Where("cart_id = ?", cart.ID).Delete(&model.CartItem{})
+	utils.WDB.Where("id = ?", cart.ID).Updates(model.Cart{Amount : 0, Num : 0,})
 	UpdateCart(userid)
 }

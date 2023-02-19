@@ -13,19 +13,19 @@ func AddItem(bookid int, cartid int) {
 		return
 	}
 	var price float64
-	utils.DB.Model(&model.Book{}).Where("id = ?", bookid).Select("price").Find(&price)
+	utils.DBrr.RoundRobin().Model(&model.Book{}).Where("id = ?", bookid).Select("price").Find(&price)
 	var ci = model.CartItem{
 		CartID : cartid,
 		BookID : bookid,
 		Num : 1,
 		Amount : price,
 	}
-	utils.DB.Create(&ci)
+	utils.WDB.Create(&ci)
 }
 
 func CheckItem(bookid int, cartid int) bool {
 	var res int
-	utils.DB.Model(&model.CartItem{}).Where("cart_id = ? AND book_id = ?", cartid, bookid).Select("num").Find(&res)
+	utils.DBrr.RoundRobin().Model(&model.CartItem{}).Where("cart_id = ? AND book_id = ?", cartid, bookid).Select("num").Find(&res)
 	if res > 0 {
 		return true
 	} else {
@@ -35,23 +35,23 @@ func CheckItem(bookid int, cartid int) bool {
 
 func ItemAddNum(bookid int, cartid int) {
 	var ci model.CartItem
-	utils.DB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Find(&ci)
+	utils.DBrr.RoundRobin().Where("book_id = ? AND  cart_id = ?", bookid, cartid).Find(&ci)
 	ci.Amount = ci.Amount + ci.Amount/float64(ci.Num)
 	ci.Num = ci.Num + 1
-	utils.DB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Updates(&ci)
+	utils.WDB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Updates(&ci)
 }
 
 func ModifyNum(bookid int, cartid int, num int) {
 	var ci model.CartItem
-	utils.DB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Find(&ci)
+	utils.DBrr.RoundRobin().Where("book_id = ? AND  cart_id = ?", bookid, cartid).Find(&ci)
 	ci.Amount = (ci.Amount / float64(ci.Num)) * float64(num)
 	ci.Num = num
-	utils.DB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Updates(&ci)
+	utils.WDB.Where("book_id = ? AND  cart_id = ?", bookid, cartid).Updates(&ci)
 }
 
 func GetItems(cartid int) []*model.CartItem {
 	var cis []*model.CartItem
-	utils.DB.Find(&cis)
+	utils.WDB.Find(&cis)
 	for _, k := range cis {
 		book := GetBook(k.BookID)
 		k.Book = book
@@ -60,5 +60,5 @@ func GetItems(cartid int) []*model.CartItem {
 }
 
 func DelItem(bookid int, cartid int) {
-	utils.DB.Where("book_id = ? AND cart_id = ?", bookid, cartid).Delete(&model.CartItem{})
+	utils.WDB.Where("book_id = ? AND cart_id = ?", bookid, cartid).Delete(&model.CartItem{})
 }
