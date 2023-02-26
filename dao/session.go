@@ -1,6 +1,7 @@
 package dao
 
 import (
+	_"go.mongodb.org/mongo-driver/bson"
 	"bookstore1.4/model"
 	"bookstore1.4/utils"
 	"fmt"
@@ -18,7 +19,7 @@ func AddSession(sess *model.Session) {  //将cookie信息存到数据库
 func GetSession(uuid string)  *model.Session { //根据uuid查找登录信息
 	var sess model.Session
 	// utils.DB.Where("id = ?", uuid).Find(&sess)
-	res1, err := utils.RDB.HGet(utils.Ctx, uuid, "user_id").Int()
+	res1, err := utils.RDB.HGet(utils.Ctx, uuid, "user_id").Result()
 	if err != nil {
 		fmt.Println("GetSession error:", err)
 		return nil

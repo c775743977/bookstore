@@ -18,7 +18,7 @@ func ShowCart(c *gin.Context) {
 }
 
 func AddBookToCart(c *gin.Context) {
-	bookid, _ := strconv.ParseInt(c.PostForm("bookId"), 0, 0)
+	// bookid, _ := strconv.ParseInt(c.PostForm("bookId"), 0, 0)
 	cookie, err := c.Cookie("user")
 	if err != nil {
 		c.String(400, "请先登录...")
@@ -26,7 +26,7 @@ func AddBookToCart(c *gin.Context) {
 	}
 	sess := dao.GetSession(cookie)
 	cart := dao.GetCart(sess.UserID)
-	dao.AddItem(int(bookid), cart.ID)
+	dao.AddItem(c.PostForm("bookId"), cart.ID)
 	dao.UpdateCart(sess.UserID)
 	Handler(c)
 }
@@ -35,8 +35,8 @@ func DelItemHandler(c *gin.Context) {
 	cookie, _ := c.Cookie("user")
 	sess := dao.GetSession(cookie)
 	cart := dao.GetCart(sess.UserID)
-	bookid, _ := strconv.ParseInt(c.Query("bookID"), 0, 0)
-	dao.DelItem(int(bookid), cart.ID)
+	// bookid, _ := strconv.ParseInt(c.Query("bookID"), 0, 0)
+	dao.DelItem(c.Query("bookID"), cart.ID)
 	dao.UpdateCart(sess.UserID)
 	cart = dao.GetCart(sess.UserID)
 	cart.UserName = sess.Username
@@ -55,10 +55,10 @@ func CleanCartHandler(c *gin.Context) {
 func CartAlter(c *gin.Context) {
 	cookie, _ := c.Cookie("user")
 	booknum, _ := strconv.ParseInt(c.PostForm("BookNum"), 0, 0)
-	bookid, _ := strconv.ParseInt(c.Query("BookID"), 0, 0)
+	// bookid, _ := strconv.ParseInt(c.Query("BookID"), 0, 0)
 	sess := dao.GetSession(cookie)
 	cart := dao.GetCart(sess.UserID)
-	dao.ModifyNum(int(bookid), cart.ID, int(booknum))
+	dao.ModifyNum(c.Query("BookID"), cart.ID, int(booknum))
 	dao.UpdateCart(sess.UserID)
 	cart = dao.GetCart(sess.UserID)
 	cart.UserName = sess.Username

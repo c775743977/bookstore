@@ -3,10 +3,10 @@ package model
 type Order struct {
 	ID string
 	CreateTime string
-	TotalCount int64
+	TotalCount int32
 	TotalAmount float64
-	Status int64 //0.未付款 1.已付款 2.等待发货 3.已发货 4.已收货
-	UserID int64
+	Status int32 //0.未付款 1.已付款 2.等待发货 3.已发货 4.已收货
+	UserID string
 	UserName string `gorm:"-"`
 }
 

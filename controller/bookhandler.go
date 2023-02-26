@@ -55,8 +55,8 @@ func GetBooksHandler(c *gin.Context) { //获取所有图书
 
 func DelBookHandler(c *gin.Context) {
 	//获取要删除的图书ID
-	id, _ := strconv.ParseInt(c.Query("bookID"), 10, 0)
-	dao.DelBook(id)
+	// id, _ := strconv.ParseInt(c.Query("bookID"), 10, 0)
+	dao.DelBook(c.Query("bookID"))
 	//再次渲染删除后的那一页html
 	GetPageHandler(c)
 }
@@ -64,8 +64,8 @@ func DelBookHandler(c *gin.Context) {
 //对某项图书数据进行修改
 func GetBookHandler(c *gin.Context) {
 	//获取要改动的图书ID
-	id, _ := strconv.ParseInt(c.Query("bookID"), 10, 0)
-	book := dao.GetBook(int(id))
+	// id, _ := strconv.ParseInt(c.Query("bookID"), 10, 0)
+	book := dao.GetBook(c.Query("bookID"))
 	c.HTML(200, "manager/book_edit.html", book)
 }
 
@@ -73,7 +73,7 @@ func GetBookHandler(c *gin.Context) {
 func ToAddOrAlterBook(c *gin.Context) { 
 	id, _ := strconv.ParseInt(c.Query("bookID"), 10, 0)
 	if id > 0 {
-		book := dao.GetBook(int(id))
+		book := dao.GetBook(c.Query("bookID"))
 		c.HTML(200, "manager/book_edit.html", book)
 	} else {
 		c.HTML(200, "manager/book_edit.html", nil)
@@ -83,8 +83,8 @@ func ToAddOrAlterBook(c *gin.Context) {
 func AddOrAlterBook(c *gin.Context) { //执行添加或者修改操作
 	var book model.Book
 	bookid := c.Query("bookID")
-	id, _ := strconv.ParseInt(bookid, 10, 0)
-	bbook := dao.GetBook(int(id))
+	// id, _ := strconv.ParseInt(bookid, 10, 0)
+	bbook := dao.GetBook(bookid)
 	err := c.Bind(&book)
 	book.Img_path = "static/img/default.jpg"
 	//报错是说明提交了空白数据
@@ -93,7 +93,7 @@ func AddOrAlterBook(c *gin.Context) { //执行添加或者修改操作
 		c.HTML(400, "manager/book_edit.html", book)
 		return
 	}
-	if book.ID == 0 {
+	if book.ID == "" {
 		if dao.CheckBook(book.Title, book.Author) { //判断图书是否存在
 			book.Err = "失败！该书已存在"
 			c.HTML(400, "manager/book_edit.html", book)

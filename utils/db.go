@@ -1,35 +1,38 @@
 package utils
 
 import (
-	"gorm.io/gorm"
-	"gorm.io/driver/mysql"
+	"time"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"github.com/redis/go-redis/v9"
 	"fmt"
 	"context"
 )
 
-var DBrr DBRR
-var WDB *gorm.DB
-var RDB1 *gorm.DB
-var RDB2 *gorm.DB
+var MDB *mongo.Client
 var err error
 var Ctx context.Context
 var RDB *redis.ClusterClient 
+var Cancel context.CancelFunc
+var C_books *mongo.Collection
+var C_cartitems *mongo.Collection
+var C_carts *mongo.Collection
+var C_orderitems *mongo.Collection
+var C_orders *mongo.Collection
+var C_users *mongo.Collection
 func init() {
-	WDB, err = gorm.Open(mysql.Open("root:Chen@123@tcp(192.168.108.166:3307)/bookstore"), &gorm.Config{})
+	Ctx, Cancel = context.WithTimeout(context.Background(), time.Second*20)
+	MDB, err = mongo.Connect(Ctx, options.Client().ApplyURI("mongodb://192.168.108.170:27017"))
 	if err != nil {
-		fmt.Println("connect to WDB error:", err)
+		fmt.Println("connect to mongodb error:", err)
+		return
 	}
-	RDB1, err = gorm.Open(mysql.Open("root:Chen@123@tcp(192.168.108.166:3308)/bookstore"), &gorm.Config{})
-	if err != nil {
-		fmt.Println("connect to RDB1 error:", err)
-	}
-	RDB2, err = gorm.Open(mysql.Open("root:Chen@123@tcp(192.168.108.166:3308)/bookstore"), &gorm.Config{})
-	if err != nil {
-		fmt.Println("connect to RDB2 error:", err)
-	}
-	DBrr.Add(RDB1)
-	DBrr.Add(RDB2)
+	C_books = MDB.Database("bookstore").Collection("books")
+	C_cartitems = MDB.Database("bookstore").Collection("cart_items")
+	C_carts = MDB.Database("bookstore").Collection("carts")
+	C_orderitems = MDB.Database("bookstore").Collection("order_items")
+	C_orders = MDB.Database("bookstore").Collection("orders")
+	C_users = MDB.Database("bookstore").Collection("users")
 	RDB = redis.NewClusterClient(&redis.ClusterOptions{
 		Addrs: []string{"192.168.108.165:6381", "192.168.108.165:6382", "192.168.108.165:6383", "192.168.108.165:6384", "192.168.108.165:6385", "192.168.108.165:6386"},
 	})

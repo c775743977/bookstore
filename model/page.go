@@ -2,6 +2,7 @@ package model
 
 import (
 	"bookstore1.4/utils"
+	"go.mongodb.org/mongo-driver/bson"
 	// "fmt"
 )
 
@@ -49,10 +50,13 @@ func (page *Page) Test() bool {
 }
 
 func (page *Page) IsRoot() bool {
-	var res string
-	utils.DBrr.RoundRobin().Model(&User{}).Where("name = ?", page.Username).Select("privilege").Find(&res)
-	if res == "Y" {
+	var res bson.D
+	users := utils.MDB.Database("bookstore").Collection("users")
+	data := users.FindOne(utils.Ctx, bson.D{{"name",page.Username},})
+	data.Decode(&res)
+	if res[4].Value == "Y" {
 		return true
+	} else {
+		return false
 	}
-	return false
 }

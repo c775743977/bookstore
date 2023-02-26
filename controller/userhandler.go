@@ -6,7 +6,7 @@ import (
 	"bookstore1.4/model"
 	"net/http"
 	_"fmt"
-	"strconv"
+	_"strconv"
 )
 
 //处理登录请求
@@ -64,9 +64,9 @@ func LogoutHandler(c *gin.Context) {
 }
 
 func ToAlterUserHandler(c *gin.Context) { //前往更新用户信息页面
-	id, _ := strconv.ParseInt(c.Query("userID"), 10, 0)
-	if id > 0 {
-		user := dao.GetUserByID(int(id))
+	id := c.Query("userID")
+	if id != "" {
+		user := dao.GetUserByID(id)
 		c.HTML(200, "manager/user_edit.html", user)
 	} else {
 		c.HTML(200, "manager/user_edit.html", nil)
@@ -76,8 +76,8 @@ func ToAlterUserHandler(c *gin.Context) { //前往更新用户信息页面
 func AlterUserHandler(c *gin.Context) { //更改用户信息或者添加用户
 	var user model.User
 	userid := c.Query("userID")
-	id, _ := strconv.ParseInt(userid, 10, 0)
-	u := dao.GetUserByID(int(id))
+	// id, _ := strconv.ParseInt(userid, 10, 0)
+	u := dao.GetUserByID(userid)
 	err := c.Bind(&user)
 	//报错是说明提交了空白数据
 	if err != nil {
@@ -85,7 +85,7 @@ func AlterUserHandler(c *gin.Context) { //更改用户信息或者添加用户
 		c.HTML(400, "manager/user_edit.html", user)
 		return
 	}
-	if user.ID == 0 {
+	if user.ID == "" {
 		if !dao.CheckUserName(user.Name) { //判断图书是否存在
 			user.Err = "失败！该用户已存在"
 			c.HTML(400, "manager/user_edit.html", user)

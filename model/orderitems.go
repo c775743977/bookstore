@@ -2,7 +2,7 @@ package model
 
 type OrderItem struct {
 	OrderID string
-	Num int64
+	Num int32
 	Amount float64
 	Title string
 	Author string

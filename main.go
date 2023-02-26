@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"bookstore1.4/controller"
+	"bookstore1.4/utils"
 	"html/template"
 )
 
@@ -12,6 +13,7 @@ func ErrInfo() (info string) {
 }
 
 func main() {
+	defer utils.Cancel()
 	r := gin.Default()
 	//定义一个输出错误信息的函数，所有加载的页面都能使用
 	r.SetFuncMap(template.FuncMap{

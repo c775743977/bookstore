@@ -1,17 +1,17 @@
 package model
 
 type Cart struct {
-	ID int
+	ID string
 	Items []*CartItem `gorm:"-"`
 	Amount float64
-	Num int
+	Num int32
 	// 个人认为可以直接把ID设置为userID
-	UserID int
+	UserID string
 	UserName string `gorm:"-"`
 }
 
-func (c *Cart) GetNum() int {
-	var total int
+func (c *Cart) GetNum() int32 {
+	var total int32
 	for _, k := range c.Items {
 		total += k.Num
 	}
